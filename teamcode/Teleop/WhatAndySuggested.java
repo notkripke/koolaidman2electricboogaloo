@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import static java.lang.Math.abs;
 
 import org.firstinspires.ftc.teamcode.GorillabotsCentral;
 
@@ -30,10 +31,21 @@ public class WhatAndySuggested extends GorillabotsCentral {
         double y;
         double r;
         int distance;
+        int leftSweetSpotMin = 17;
+        int leftSweetSpotMax = 24;
+        int rightSweetSpotMin = 17;
+        int rightSweetSpotMax = 24;
 
         while (opModeIsActive()) {
 
             // SET DRIVING STUFF ↓
+
+            telemetry.addData("Drive", "better Connor");
+            telemetry.update();
+            telemetry.addData("Drive", "faster Connor");
+            telemetry.update();
+            telemetry.addData("Stop", "missing Connor");
+            telemetry.update();
 
             x = gamepad1.left_stick_x;
             y = -gamepad1.left_stick_y;
@@ -87,6 +99,45 @@ public class WhatAndySuggested extends GorillabotsCentral {
                 telemetry.update();
             }
 
+            if (sensors.getDistanceL() > leftSweetSpotMin && sensors.getDistanceL() < leftSweetSpotMax){
+                telemetry.addData("Lined", "up");
+                telemetry.update();
+            }
+
+            if(sensors.getDistanceL() < leftSweetSpotMin || sensors.getDistanceL() > leftSweetSpotMax){
+                telemetry.addData("Not", "lined up");
+                telemetry.update();
+            }
+
+            if (sensors.getDistanceR() > rightSweetSpotMin && sensors.getDistanceR() < rightSweetSpotMax){
+                telemetry.addData("Lined", "up");
+                telemetry.update();
+            }
+
+            if (sensors.getDistanceR() < rightSweetSpotMin && sensors.getDistanceR() > rightSweetSpotMax){
+                telemetry.addData("Not", "lined up");
+                telemetry.update();
+            }
+
+            if (sensors.getDistanceL() < leftSweetSpotMin){
+                telemetry.addData("Move", "right");
+                telemetry.update();
+            }
+
+            if (sensors.getDistanceL() > leftSweetSpotMax){
+                telemetry.addData("Move", "left");
+            }
+
+            if (sensors.getDistanceR() < rightSweetSpotMin){
+                telemetry.addData("Move", "left");
+                telemetry.update();
+            }
+
+            if (sensors.getDistanceR() > rightSweetSpotMax){
+                telemetry.addData("Move", "right");
+                telemetry.update();
+            }
+
             switch (slow) {
 
                 case 0:
@@ -108,6 +159,12 @@ public class WhatAndySuggested extends GorillabotsCentral {
                     if(gamepad2.right_trigger > 0.5){
                         FireRing();
                     }
+
+                    telemetry.addData("Distance to left wall", sensors.getDistanceL());
+                    telemetry.update();
+
+                    telemetry.addData("Distance to right wall", sensors.getDistanceR());
+                    telemetry.update();
 
 
             }

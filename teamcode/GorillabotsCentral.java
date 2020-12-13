@@ -105,14 +105,9 @@ public abstract class GorillabotsCentral extends LinearOpMode {
         IntakeMotor = hardwareMap.dcMotor.get("IntakeMotor");
 
         final double IntakeSpeed = 0.4;
-        final boolean isIntakeSpinning = true;
 
-        if (gamepad1.a || gamepad2.a){
-            IntakeMotor.setPower(-IntakeSpeed);
-        }
-        if (isIntakeSpinning){
-            IntakeMotor.setPower(IntakeSpeed);
-        }
+        IntakeMotor.setPower(IntakeSpeed);
+
     }
 
     public void StopIntake(){ // teleop only
@@ -121,6 +116,17 @@ public abstract class GorillabotsCentral extends LinearOpMode {
         IntakeMotor.setPower(0);
         telemetry.addData("Intake:","off");
         telemetry.update();
+    }
+
+    public void SpitRing(){ // teleop only
+        DcMotor IntakeMotor;
+        IntakeMotor = hardwareMap.dcMotor.get("IntakeMotor");
+
+        final double SpitSpeed = -0.55;
+
+        IntakeMotor.setPower(SpitSpeed);
+        sleep(500);
+
     }
 
     public void AlignLeft(){

@@ -23,18 +23,18 @@ public class WhatAndySuggested extends GorillabotsCentral {
         ShooterMotor = hardwareMap.dcMotor.get("ShooterMotor");
 
         final double INCREMENT   = -0.01;     // Amount to ramp motor(Higher numbers = faster)↓↓
-        final int    CYCLE_MS    =   25;     // Change ammount of time per wait/cycle
+        final int    CYCLE_MS    =   25;     // Change amount of time per wait/cycle
         final double MAX_FWD     =  -0.80;     // Maximum FWD power applied to motor
         boolean DriveSlow = false;
         double ShootSpeed = -0.15;
         double x;
-        double y;
         double r;
+        double y;
         int distance;
-        int leftSweetSpotMin = 17;
-        int leftSweetSpotMax = 24;
-        int rightSweetSpotMin = 17;
-        int rightSweetSpotMax = 24;
+        int leftSweetSpotMin = 17;//These
+        int leftSweetSpotMax = 24;//are for
+        int rightSweetSpotMin = 17;//manual aiming
+        int rightSweetSpotMax = 24;//telemetry
 
         while (opModeIsActive()) {
 
@@ -58,8 +58,15 @@ public class WhatAndySuggested extends GorillabotsCentral {
                 ShootSpeed = MAX_FWD;
             }
 
-            telemetry.addData("Shooter Speed", "%5.2f", ShootSpeed);
-            telemetry.update();
+            if (ShootSpeed == MAX_FWD){
+                telemetry.addData("Shooter", "Ready");
+                telemetry.update();
+            }
+
+            if (ShootSpeed > MAX_FWD){
+                telemetry.addData("Shooter", "Not Ready");
+                telemetry.update();
+            }
 
             ShooterMotor.setPower(ShootSpeed);
             if (ShootSpeed <= MAX_FWD) {
@@ -97,6 +104,10 @@ public class WhatAndySuggested extends GorillabotsCentral {
                 StopIntake();
                 telemetry.addData("Intake", "not spinning");
                 telemetry.update();
+            }
+
+            if (gamepad1.left_bumper){
+                SpitRing();
             }
 
             if (sensors.getDistanceL() > leftSweetSpotMin && sensors.getDistanceL() < leftSweetSpotMax){

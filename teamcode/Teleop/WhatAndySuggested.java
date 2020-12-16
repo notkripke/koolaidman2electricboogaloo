@@ -25,7 +25,6 @@ public class WhatAndySuggested extends GorillabotsCentral {
         final double INCREMENT   = -0.01;     // Amount to ramp motor(Higher numbers = faster)↓↓
         final int    CYCLE_MS    =   25;     // Change amount of time per wait/cycle
         final double MAX_FWD     =  -0.80;     // Maximum FWD power applied to motor
-        boolean DriveSlow = false;
         double ShootSpeed = -0.15;
         double x;
         double r;
@@ -85,10 +84,6 @@ public class WhatAndySuggested extends GorillabotsCentral {
 
             if(gamepad1.dpad_right){
                 AlignRight();
-            }
-
-            if(gamepad1.b){
-                DriveSlow = !DriveSlow;
             }
 
             if(gamepad1.b){

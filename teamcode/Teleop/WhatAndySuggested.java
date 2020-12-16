@@ -110,7 +110,7 @@ public class WhatAndySuggested extends GorillabotsCentral {
                 telemetry.update();
             }
 
-            if(sensors.getDistanceL() < leftSweetSpotMin || sensors.getDistanceL() > leftSweetSpotMax){
+            if(sensors.getDistanceL() < leftSweetSpotMin && sensors.getDistanceL() > leftSweetSpotMax){
                 telemetry.addData("Not", "lined up");
                 telemetry.update();
             }

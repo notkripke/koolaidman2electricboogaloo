@@ -25,6 +25,7 @@ public class WhatAndySuggested extends GorillabotsCentral {
         final double INCREMENT   = -0.01;     // Amount to ramp motor(Higher numbers = faster)↓↓
         final int    CYCLE_MS    =   25;     // Change amount of time per wait/cycle
         final double MAX_FWD     =  -0.80;     // Maximum FWD power applied to motor
+        boolean DriveSlow = false;
         double ShootSpeed = -0.15;
         double x;
         double r;
@@ -87,6 +88,10 @@ public class WhatAndySuggested extends GorillabotsCentral {
             }
 
             if(gamepad1.b){
+                DriveSlow = !DriveSlow;
+            }
+
+            if(gamepad1.b){
                 slow += 1;
             }
 
@@ -110,7 +115,7 @@ public class WhatAndySuggested extends GorillabotsCentral {
                 telemetry.update();
             }
 
-            if(sensors.getDistanceL() < leftSweetSpotMin && sensors.getDistanceL() > leftSweetSpotMax){
+            if(sensors.getDistanceL() < leftSweetSpotMin || sensors.getDistanceL() > leftSweetSpotMax){
                 telemetry.addData("Not", "lined up");
                 telemetry.update();
             }
@@ -144,6 +149,14 @@ public class WhatAndySuggested extends GorillabotsCentral {
                 telemetry.update();
             }
 
+            if(gamepad1.y && gamepad1.dpad_left){
+                PowerShots(true,false);
+            }
+
+            if(gamepad1.y && gamepad1.dpad_right){
+                PowerShots(false, true);
+            }
+
             switch (slow) {
 
                 case 0:
@@ -162,7 +175,7 @@ public class WhatAndySuggested extends GorillabotsCentral {
                     slow = 0;
                     break;
             }
-                    if(gamepad1.right_trigger > 0.5){
+                    if(gamepad2.right_trigger > 0.5){
                         FireRing();
                     }
 

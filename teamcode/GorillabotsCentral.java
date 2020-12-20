@@ -158,6 +158,27 @@ public abstract class GorillabotsCentral extends LinearOpMode {
 
     }
 
+    public void PowerShots(boolean left, boolean right){
+        if (left){
+            AlignLeft();
+            TurnAbsolute(22, 0.3, 0.8);
+            FireRing();
+            TurnAbsolute(26,0.3,0.8);
+            FireRing();
+            TurnAbsolute(34,0.3,0.);
+            FireRing();
+        }
+        if(right){
+            AlignRight();
+            TurnAbsolute(-15,0.3,0.8);
+            FireRing();
+            TurnAbsolute(-23,0.3,0.8);
+            FireRing();
+            TurnAbsolute(-32,0.3,0.8);
+            FireRing();
+        }
+    }
+
 
     public void MoveUntilEncoder(double distance, double degree, double power) {
 

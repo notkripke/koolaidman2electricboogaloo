@@ -11,6 +11,8 @@ import org.firstinspires.ftc.teamcode.GorillabotsCentral;
 public class UGpark extends GorillabotsCentral {
     public void runOpMode() {
 
+        initializeComponentsAutonomous();
+
         waitForStart();
 
         MoveUntilEncoderGYRO(40, 0, .6, 0);//distance (rotations[12.57"]),

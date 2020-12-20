@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.GorillabotsCentral;
 
 @Autonomous(group = "test", name = "ThreeHighPark")
 
-public class ThreeHighPark extends GorillabotsCentral {
+public class RedPowerShotsPark extends GorillabotsCentral {
     public void runOpMode() {
 
         initializeComponentsAutonomous();
@@ -30,13 +30,9 @@ public class ThreeHighPark extends GorillabotsCentral {
             }
         }
 
-        MoveUntilEncoderGYRO(32, 0, .6, 0);
-        TurnAbsolute(20,0.3,0.8);
-        sleep(400);
-        FireRing();
-        FireRing();
-        FireRing();
-        MoveUntilEncoderGYRO(8,0,.4,0);
+        MoveUntilEncoderGYRO(32,0,0.6,0);//up to line
+        PowerShots(false,true);//shoot pow
+        MoveUntilEncoderGYRO(8,0,.4,0);//park
         sleep(2000);//wait until end of auto (adjustment needed to get final time to 30 seconds)
 
         return;

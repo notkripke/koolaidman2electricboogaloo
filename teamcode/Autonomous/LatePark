@@ -12,6 +12,8 @@ import org.firstinspires.ftc.teamcode.GorillabotsCentral;
 public class LatePark extends GorillabotsCentral {
     public void runOpMode() {
 
+        initializeComponentsAutonomous();
+
         waitForStart();
 
         sleep(26000);//robot delays movement until 4 seconds left in auto

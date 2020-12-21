@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import static java.lang.Math.abs;
 
 import org.firstinspires.ftc.teamcode.GorillabotsCentral;
@@ -17,6 +19,8 @@ public class WhatAndySuggested extends GorillabotsCentral {
 
         waitForStart();
 
+        ElapsedTime SlowTimer = new ElapsedTime(); //creates timer to prevent rapid stage increase
+
         int slow = 0;
 
         DcMotor ShooterMotor;
@@ -26,10 +30,13 @@ public class WhatAndySuggested extends GorillabotsCentral {
         final int    CYCLE_MS    =   25;     // Change amount of time per wait/cycle
         final double MAX_FWD     =  -0.80;     // Maximum FWD power applied to motor
         boolean DriveSlow = false;
+        boolean DriveSlowWatch = false;
         double ShootSpeed = -0.15;
-        double x;
-        double r;
-        double y;
+
+        double x = 0;
+        double r = 0;
+        double y = 0;
+
         int distance;
         int leftSweetSpotMin = 17;//These
         int leftSweetSpotMax = 24;//are for
@@ -87,15 +94,12 @@ public class WhatAndySuggested extends GorillabotsCentral {
                 AlignRight();
             }
 
-            if(gamepad1.b){
-                DriveSlow = !DriveSlow;
-            }
-
-            if(gamepad1.b){
+            if(gamepad1.b && SlowTimer.time() > 1.5)
                 slow += 1;
+                SlowTimer.reset();
             }
 
-            if(gamepad1.left_trigger > 0.5){
+            if (gamepad1.left_trigger > 0.5){
                 StartIntake();
                 telemetry.addData("Intake", "spinning");
                 telemetry.update();
@@ -157,6 +161,9 @@ public class WhatAndySuggested extends GorillabotsCentral {
                 PowerShots(false, true);
             }
 
+            telemetry.addData("Slow Driving Timer (< 1.5 sec to change)", SlowTimer);
+            telemetry.update();
+
             switch (slow) {
 
                 case 0:
@@ -187,6 +194,5 @@ public class WhatAndySuggested extends GorillabotsCentral {
 
 
             }
-            telemetry.update();
         }
-    }
+

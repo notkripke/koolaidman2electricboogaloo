@@ -131,6 +131,7 @@ public abstract class GorillabotsCentral extends LinearOpMode {
 
     public void AlignLeft(){
         TurnAbsolute(0,.3, .8);
+        MoveUntilRangeB(29,0,0.4);
         MoveUntilRangeLG(30,270,.7,0);
         TurnAbsolute(20,.3,.8);
         stopMotors();
@@ -141,6 +142,7 @@ public abstract class GorillabotsCentral extends LinearOpMode {
 
     public void AlignRight(){
         TurnAbsolute(0,.3,.8);
+        MoveUntilRangeB(29,0,0.4);
         MoveUntilRangeRG(30,90,.7,0);
         TurnAbsolute(20,.3,.8);
         stopMotors();

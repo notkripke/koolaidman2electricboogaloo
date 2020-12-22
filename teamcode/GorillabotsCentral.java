@@ -129,27 +129,26 @@ public abstract class GorillabotsCentral extends LinearOpMode {
 
     }
 
-    public void AlignLeft(){
-        TurnAbsolute(0,.3, .8);
-        MoveUntilRangeB(29,0,0.4);
-        MoveUntilRangeLG(30,270,.7,0);
-        TurnAbsolute(20,.3,.8);
-        stopMotors();
+    public void ShootAlign(boolean left, boolean right){
+        if (left) {
+            TurnAbsolute(0, .3, .8);
+            MoveUntilRangeLG(30, 270, .7, 0);
+            TurnAbsolute(20, .3, .8);
+            stopMotors();
+            telemetry.addData("Alignment:", "Complete");
+            telemetry.update();
+        }
+        if (right){
+            TurnAbsolute(0,.3,.8);
+            MoveUntilRangeRG(30,90,.7,0);
+            TurnAbsolute(20,.3,.8);
+            stopMotors();
 
-        telemetry.addData("Alignment:","Complete");
-        telemetry.update();
+            telemetry.addData("Alignment:", "Complete");
+            telemetry.update();
+        }
     }
 
-    public void AlignRight(){
-        TurnAbsolute(0,.3,.8);
-        MoveUntilRangeB(29,0,0.4);
-        MoveUntilRangeRG(30,90,.7,0);
-        TurnAbsolute(20,.3,.8);
-        stopMotors();
-
-        telemetry.addData("Alignment:", "Complete");
-        telemetry.update();
-    }
 
     public void FireRing(){
         Servo Feeder;
@@ -162,7 +161,7 @@ public abstract class GorillabotsCentral extends LinearOpMode {
 
     public void PowerShots(boolean left, boolean right){
         if (left){
-            AlignLeft();
+            ShootAlign(true, false);
             TurnAbsolute(22, 0.3, 0.8);
             FireRing();
             TurnAbsolute(26,0.3,0.8);
@@ -171,7 +170,7 @@ public abstract class GorillabotsCentral extends LinearOpMode {
             FireRing();
         }
         if(right){
-            AlignRight();
+            ShootAlign(false, right);
             TurnAbsolute(-15,0.3,0.8);
             FireRing();
             TurnAbsolute(-23,0.3,0.8);

@@ -87,11 +87,11 @@ public class WhatAndySuggested extends GorillabotsCentral {
             }
 
             if(gamepad1.dpad_left){
-                AlignLeft();
+                ShootAlign(true, false);
             }
 
             if(gamepad1.dpad_right){
-                AlignRight();
+                ShootAlign(false, true);
             }
 
             if(gamepad1.b && SlowTimer.time() > 1.5)

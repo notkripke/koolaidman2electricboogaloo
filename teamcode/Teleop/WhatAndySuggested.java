@@ -37,7 +37,6 @@ public class WhatAndySuggested extends GorillabotsCentral {
         double r = 0;
         double y = 0;
 
-        int distance;
         int leftSweetSpotMin = 17;//These
         int leftSweetSpotMax = 24;//are for
         int rightSweetSpotMin = 17;//manual aiming
@@ -81,10 +80,6 @@ public class WhatAndySuggested extends GorillabotsCentral {
             }
 
             //if statement watches↓↓
-
-            if (gamepad1.b && gamepad1.dpad_left || gamepad1.b && gamepad1.dpad_right){
-                distance = 0;
-            }
 
             if(gamepad1.dpad_left){
                 ShootAlign(true, false);

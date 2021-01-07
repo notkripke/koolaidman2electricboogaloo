@@ -158,11 +158,11 @@ public class WhatAndySuggested extends GorillabotsCentral {
                 telemetry.update();
             }
 
-            if(gamepad1.y && gamepad1.dpad_left){
+            if(gamepad1.x){
                 PowerShots(true,false);
             }
 
-            if(gamepad1.y && gamepad1.dpad_right){
+            if(gamepad1.y){
                 PowerShots(false, true);
             }
 

@@ -21,6 +21,8 @@ public class WhatAndySuggested extends GorillabotsCentral {
 
         ElapsedTime SlowTimer = new ElapsedTime(); //creates timer to prevent rapid stage increase
 
+        ElapsedTime SpinUpTimer = new ElapsedTime(); //Makes spin up time effect
+
         int slow = 0;
 
         DcMotor ShooterMotor;
@@ -69,14 +71,22 @@ public class WhatAndySuggested extends GorillabotsCentral {
                 telemetry.update();
             }
 
-            if (ShootSpeed > MAX_FWD){
-                telemetry.addData("Shooter", "Not Ready");
-                telemetry.update();
+            if (SpinUpTimer.time() <= 2000) {
+
+                if (ShootSpeed > MAX_FWD) {
+                    telemetry.addData("Shooter", "Not Ready");
+                    telemetry.update();
+                }
+
+                ShooterMotor.setPower(ShootSpeed);
+                if (ShootSpeed <= MAX_FWD) {
+                    sleep(CYCLE_MS);
+                }
             }
 
-            ShooterMotor.setPower(ShootSpeed);
-            if (ShootSpeed <= MAX_FWD) {
-                sleep(CYCLE_MS);
+            if (SpinUpTimer.time() >= 2001){
+                ShootSpeed = MAX_FWD;
+                ShooterMotor.setPower(ShootSpeed);
             }
 
             //if statement watches↓↓

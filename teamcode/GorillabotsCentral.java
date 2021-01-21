@@ -317,7 +317,7 @@ public abstract class GorillabotsCentral extends LinearOpMode {
         setMotorsBackwards();
         MoveTo(direction, power);
         while (abs(sensors.getDistanceR() - distance) > .2 && opModeIsActive()) {
-            if(gamepad1.x){
+            if(gamepad1.a){
                 distance = 0;
             }
             MoveTowR(direction, power, (gyro.getAngle() - gyroT) / 50);
@@ -331,7 +331,7 @@ public abstract class GorillabotsCentral extends LinearOpMode {
         setMotorsBackwards();
         MoveTo(direction, power);
         while ((sensors.getDistanceL() > distance) && opModeIsActive())  {
-            if(gamepad1.x){
+            if(gamepad1.a){
                 distance = 0;
             }
             MoveTowR(direction, power, (gyro.getAngle() - gyroT) / 50);

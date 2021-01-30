@@ -119,6 +119,7 @@ public class TestDrive extends GorillabotsCentral {
             }
 
         }
+        ShooterMotor.setPower(0);
     }
 }
 

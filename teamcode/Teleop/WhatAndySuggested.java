@@ -27,6 +27,7 @@ public class WhatAndySuggested extends GorillabotsCentral {
 
         DcMotor ShooterMotor;
         ShooterMotor = hardwareMap.dcMotor.get("ShooterMotor");
+        ShooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         final double INCREMENT   = -0.01;     // Amount to ramp motor(Higher numbers = faster)↓↓
         final int    CYCLE_MS    =   25;     // Change amount of time per wait/cycle
@@ -47,14 +48,6 @@ public class WhatAndySuggested extends GorillabotsCentral {
         while (opModeIsActive()) {
 
             // SET DRIVING STUFF ↓
-
-            telemetry.addData("Drive", "better Connor");
-            telemetry.update();
-            telemetry.addData("Drive", "faster Connor");
-            telemetry.update();
-            telemetry.addData("Stop", "missing Connor");
-            telemetry.update();
-
             x = gamepad1.left_stick_x;
             y = -gamepad1.left_stick_y;
             r = gamepad1.right_stick_x;
@@ -129,15 +122,15 @@ public class WhatAndySuggested extends GorillabotsCentral {
                 telemetry.update();
             }
 
-            if (sensors.getDistanceR() > rightSweetSpotMin && sensors.getDistanceR() < rightSweetSpotMax){
-                telemetry.addData("Lined", "up");
-                telemetry.update();
-            }
+            //if (sensors.getDistanceR() > rightSweetSpotMin && sensors.getDistanceR() < rightSweetSpotMax){
+             //   telemetry.addData("Lined", "up");
+              //  telemetry.update();
+            //}
 
-            if (sensors.getDistanceR() < rightSweetSpotMin && sensors.getDistanceR() > rightSweetSpotMax){
-                telemetry.addData("Not", "lined up");
-                telemetry.update();
-            }
+            //if (sensors.getDistanceR() < rightSweetSpotMin && sensors.getDistanceR() > rightSweetSpotMax){
+             //   telemetry.addData("Not", "lined up");
+              //  telemetry.update();
+            //}
 
             if (sensors.getDistanceL() < leftSweetSpotMin){
                 telemetry.addData("Move", "right");
@@ -148,15 +141,15 @@ public class WhatAndySuggested extends GorillabotsCentral {
                 telemetry.addData("Move", "left");
             }
 
-            if (sensors.getDistanceR() < rightSweetSpotMin){
-                telemetry.addData("Move", "left");
-                telemetry.update();
-            }
+           // if (sensors.getDistanceR() < rightSweetSpotMin){
+             //   telemetry.addData("Move", "left");
+               // telemetry.update();
+            //}
 
-            if (sensors.getDistanceR() > rightSweetSpotMax){
-                telemetry.addData("Move", "right");
-                telemetry.update();
-            }
+           // if (sensors.getDistanceR() > rightSweetSpotMax){
+             //   telemetry.addData("Move", "right");
+               // telemetry.update();
+            //}
 
             if(gamepad1.x){
                 PowerShots(true,false);
@@ -194,8 +187,8 @@ public class WhatAndySuggested extends GorillabotsCentral {
                     telemetry.addData("Distance to left wall", sensors.getDistanceL());
                     telemetry.update();
 
-                    telemetry.addData("Distance to right wall", sensors.getDistanceR());
-                    telemetry.update();
+                   // telemetry.addData("Distance to right wall", sensors.getDistanceR());
+                    //telemetry.update();
 
 
             }

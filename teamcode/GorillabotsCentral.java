@@ -15,7 +15,6 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.Components.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Components.AutoDrive;
 import org.firstinspires.ftc.teamcode.Components.CustomVision;
-import org.firstinspires.ftc.teamcode.Components.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Components.RevGyro;
 import org.firstinspires.ftc.teamcode.Components.Sensors;
 import org.firstinspires.ftc.teamcode.Components.VuforiaKeyManager;
@@ -78,6 +77,10 @@ public abstract class GorillabotsCentral extends LinearOpMode {
 
         drive = new MecanumDrive(hardwareMap, telemetry);
 
+        sensors = new Sensors(hardwareMap, telemetry);
+
+        gyro = new RevGyro(hardwareMap, telemetry);
+
         telemetry.addData("done:", "init");
         telemetry.update();
     }
@@ -87,6 +90,10 @@ public abstract class GorillabotsCentral extends LinearOpMode {
         ADrive = new AutoDrive(hardwareMap, telemetry);
 
         drive = new MecanumDrive(hardwareMap, telemetry);
+
+        sensors = new Sensors(hardwareMap, telemetry);
+
+        gyro = new RevGyro(hardwareMap, telemetry);
 
         telemetry.addData("done:", "init");
         telemetry.update();
@@ -132,7 +139,7 @@ public abstract class GorillabotsCentral extends LinearOpMode {
     public void ShootAlign(boolean left, boolean right){
         if (left) {
             TurnAbsolute(0, .3, .8);
-            MoveUntilRangeLG(30, 270, .7, 0);
+            MoveUntilRangeLG(21, 270, .7, 0);
             TurnAbsolute(20, .3, .8);
             stopMotors();
             telemetry.addData("Alignment:", "Complete");
@@ -140,7 +147,7 @@ public abstract class GorillabotsCentral extends LinearOpMode {
         }
         if (right){
             TurnAbsolute(0,.3,.8);
-            MoveUntilRangeRG(30,90,.7,0);
+           // MoveUntilRangeRG(30,90,.7,0);
             TurnAbsolute(20,.3,.8);
             stopMotors();
 
@@ -159,7 +166,7 @@ public abstract class GorillabotsCentral extends LinearOpMode {
 
     }
 
-    public void PowerShots(boolean left, boolean right){
+    public void PowerShots(boolean left, boolean right){ // change distance things to 30-31
         if (left){
             ShootAlign(true, false);
             TurnAbsolute(22, 0.3, 0.8);
@@ -277,7 +284,7 @@ public abstract class GorillabotsCentral extends LinearOpMode {
         stopMotors();
     }
 
-    public void MoveUntilRangeF(double distance, double direction, double power) {
+   /* public void MoveUntilRangeF(double distance, double direction, double power) {
         setDriveEncoderOn(false);
         setMotorsBackwards();
         MoveTo(direction, power);
@@ -288,19 +295,18 @@ public abstract class GorillabotsCentral extends LinearOpMode {
         }
         stopMotors();
     }
-
+*/
     public void MoveUntilRangeB(double distance, double direction, double power) {
         setDriveEncoderOn(false);
         setMotorsBackwards();
         MoveTo(direction, power);
         while ((sensors.getDistanceB() > distance) && opModeIsActive()) {
             MoveTo(direction, power);
-            telemetry.addData("d", sensors.getDistanceB());
-            telemetry.update();
         }
         stopMotors();
     }
-    public void MoveUntilRangeFwithG(double distance, double direction, double power,double gyroT) {
+
+    /*public void MoveUntilRangeFwithG(double distance, double direction, double power,double gyroT) {
         setDriveEncoderOn(false);
         setMotorsBackwards();
         MoveTo(direction, power);
@@ -311,8 +317,10 @@ public abstract class GorillabotsCentral extends LinearOpMode {
         }
         stopMotors();
     }
+    */
 
-    public void MoveUntilRangeRG(double distance, double direction, double power, double gyroT) {
+
+    /*public void MoveUntilRangeRG(double distance, double direction, double power, double gyroT) {
         setDriveEncoderOn(false);
         setMotorsBackwards();
         MoveTo(direction, power);
@@ -325,7 +333,7 @@ public abstract class GorillabotsCentral extends LinearOpMode {
             telemetry.update();
         }
         stopMotors();
-    }
+    }*/
     public void MoveUntilRangeLG(double distance, double direction, double power, double gyroT) {
         setDriveEncoderOn(false);
         setMotorsBackwards();
@@ -335,8 +343,6 @@ public abstract class GorillabotsCentral extends LinearOpMode {
                 distance = 0;
             }
             MoveTowR(direction, power, (gyro.getAngle() - gyroT) / 50);
-            telemetry.addData("d", sensors.getDistanceL());
-            telemetry.update();
         }
         stopMotors();
     }
@@ -370,7 +376,7 @@ public abstract class GorillabotsCentral extends LinearOpMode {
         }
         stopMotors();
     }
-    public void MoveUntilEncoderGYRORangeR(double distance, double direction, double power, double gyroT, double rangeT) {
+    /*public void MoveUntilEncoderGYRORangeR(double distance, double direction, double power, double gyroT, double rangeT) {
         setMotorsBackwards();
         setDriveEncoderOn(false);
         int initPos = drive.mfr.getCurrentPosition();
@@ -386,7 +392,7 @@ public abstract class GorillabotsCentral extends LinearOpMode {
             MoveTowR(direction + correctionDirection, power, (gyro.getAngle() - gyroT) / 50);
         }
         stopMotors();
-    }
+    }*/
 
     public void MoveUntilTime(long timeMilli, double direction, double power) {
         setMotorsBackwards();
@@ -395,23 +401,7 @@ public abstract class GorillabotsCentral extends LinearOpMode {
         sleep(timeMilli);
         stopMotors();
     }
-    public void MoveUntilTouch (double direction, double power, double gyroT){
-        setDriveEncoderOn(false);
-        setMotorsBackwards();
-        while ((sensors.alignT.getState()) && opModeIsActive()) {
-            MoveTowR(direction, power,(gyro.getAngle() - gyroT) / 50);
-        }
-        stopMotors();
-    }
 
-    public void MoveUntilTouchRangeF (double direction, double power, double gyroT){
-        setDriveEncoderOn(false);
-        setMotorsBackwards();
-        while ((sensors.alignT.getState() && sensors.getDistanceF() > 7.75) && opModeIsActive()) { //9
-            MoveTowR(direction, power,(gyro.getAngle() - gyroT) / 50);
-        }
-        stopMotors();
-    }
     public void MoveTo(double degree, double power) {
         double degreeRad = Math.toRadians(degree - degreeCorrection); // Convert to radians
         double cs = Math.cos(degreeRad);
@@ -555,10 +545,10 @@ public abstract class GorillabotsCentral extends LinearOpMode {
             leftPower = Range.clip(-drivea, -1.0, 1.0);
             rightPower = Range.clip(drivea, -1.0, 1.0);
 
-            drive.mfl.setPower(rightPower);
-            drive.mbl.setPower(rightPower);
-            drive.mfr.setPower(leftPower);
-            drive.mbr.setPower(leftPower);
+            drive.mfl.setPower(-rightPower);
+            drive.mbl.setPower(-rightPower);
+            drive.mfr.setPower(-leftPower);
+            drive.mbr.setPower(-leftPower);
 
             telemetry.addData("Left Power", leftPower);
             telemetry.addData("right Power", rightPower);

@@ -24,6 +24,8 @@ public class VanillaDrive extends GorillabotsCentral {
         double y = 0;
 
         waitForStart();
+        ElapsedTime SlowTimer = new ElapsedTime(); //creates timer to prevent rapid stage increase
+        int slow = 0;
 
         while (opModeIsActive()) {
 
@@ -33,6 +35,11 @@ public class VanillaDrive extends GorillabotsCentral {
             y = -gamepad1.left_stick_y;
             r = gamepad1.right_stick_x;
 
+            if (gamepad1.b && SlowTimer.time() > 1.5) {
+                slow += 1;
+                SlowTimer.reset();
+            }
+                /*
             if(gamepad1.left_trigger > 0.3){
                 drive.go(x * 0.25, y * 0.25, r * 0.25);
             }
@@ -40,7 +47,28 @@ public class VanillaDrive extends GorillabotsCentral {
                 drive.go(x * 0.85, y * 0.85, r * 0.85);
             }
 
+                 */
+            switch (slow) {
+
+                case 0:
+                    drive.go(x, y, r); // drive speed max
+
+                    telemetry.addData("Driving slow?", "No");
+                    telemetry.update();
+                    break;
+                case 1:
+                    drive.go(x * 0.25, y * 0.25, r * 0.25);
+
+                    telemetry.addData("Driving slow?", "Yes");
+                    telemetry.update();
+                    break;
+                case 2: //for looping
+                    slow = 0;
+                    break;
+            }
+
         }
     }
 }
+
 

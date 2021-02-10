@@ -31,29 +31,29 @@ public class MecanumDrive
     
     public void go(double x, double y, double r)
     {
-        tele.addData("x", x);
-        tele.addData("y", y);
-        tele.addData("r", r);
+        //tele.addData("x", x);
+        //tele.addData("y", y);
+        //tele.addData("r", r);
 
         fl = -x - y - r;
         fr = -x + y - r;
         bl = x - y - r;
         br = x + y - r;
 
-        tele.addData("pfl", fl);
-        tele.addData("pfr", fr);
-        tele.addData("pbl", bl);
-        tele.addData("pbr", br);
+        //tele.addData("pfl", fl);
+        //tele.addData("pfr", fr);
+        //tele.addData("pbl", bl);
+        //tele.addData("pbr", br);
 
         mfl.setPower(fl);
         mfr.setPower(fr);
         mbl.setPower(bl);
         mbr.setPower(br);
 
-        tele.addData("ofl", mfl.getCurrentPosition());
-        tele.addData("ofr", mfr.getCurrentPosition());
-        tele.addData("obl", mbl.getCurrentPosition());
-        tele.addData("obr", mbr.getCurrentPosition());
+        //tele.addData("ofl", mfl.getCurrentPosition());
+        //tele.addData("ofr", mfr.getCurrentPosition());
+        //tele.addData("obl", mbl.getCurrentPosition());
+        //tele.addData("obr", mbr.getCurrentPosition());
     }
 
     private int froffset = 0;

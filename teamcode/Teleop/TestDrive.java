@@ -24,25 +24,21 @@ public class TestDrive extends GorillabotsCentral {
         double r = 0;
         double y = 0;
 
-        double ShootStart = 0;
-
         waitForStart();
 
         ElapsedTime SlowTimer = new ElapsedTime(); //creates timer to prevent rapid stage increase
-        ElapsedTime SpinUpTimer = new ElapsedTime(); //Makes spin up time effect
+        ElapsedTime IntakeTimer = new ElapsedTime();
 
         int slow = 0;
+        boolean IntakeToggle = false;
 
         DcMotor ShooterMotor;
         ShooterMotor = hardwareMap.dcMotor.get("ShooterMotor");
-        ShooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        ShooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        final double INCREMENT = -0.01;     // amount to ramp motor each CYCLE_MS cycle
-        final int CYCLE_MS = 50;     // period of each cycle
-        final double MAX_FWD = -0.80;     // Maximum FWD power applied to motor
-
-        double ShootSpeed = 0;
-
+        DcMotor Intake;
+        Intake = hardwareMap.dcMotor.get("Intake");
+        Intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         while (opModeIsActive()) {
 
@@ -52,34 +48,27 @@ public class TestDrive extends GorillabotsCentral {
             y = -gamepad1.left_stick_y;
             r = gamepad1.right_stick_x;
 
+
+
             if (gamepad1.x) { // X STARTS SHOOTER
-                ShootStart = 1;
+                ShooterMotor.setPower(1);
+                telemetry.addData("Shooter", "on");
+            }
+            if (gamepad1.y){
+                ShooterMotor.setPower(0);
+                telemetry.addData("Shooter","off");
             }
 
-            if (ShootStart == 1){
-
-                ShootSpeed += INCREMENT;
-                if (ShootSpeed <= MAX_FWD) {
-                    ShootSpeed = MAX_FWD;
-                }
-
-                if (ShootSpeed == MAX_FWD) {
-                    telemetry.addData("Shooter", "Ready");
-                    telemetry.update();
-                }
-
-                if (SpinUpTimer.time() <= 2000) {
-
-                    if (ShootSpeed > MAX_FWD) {
-                        telemetry.addData("Shooter", "Not Ready");
-                        telemetry.update();
-                    }
-
-                    ShooterMotor.setPower(ShootSpeed);
-                    if (ShootSpeed <= MAX_FWD) {
-                        sleep(CYCLE_MS);
-                    }
-                }
+            if (gamepad1.left_bumper && IntakeTimer.time() > 1.5){
+                IntakeToggle = !IntakeToggle;
+            }
+            if (IntakeToggle = true){
+                Intake.setPower(0.9);
+                telemetry.addData("Intake","on");
+            }
+            if(IntakeToggle = false){
+                Intake.setPower(0);
+                telemetry.addData("Intake","off");
             }
 
             if (gamepad1.b && SlowTimer.time() > 1.5) {
@@ -98,28 +87,32 @@ public class TestDrive extends GorillabotsCentral {
 
             telemetry.addData("Sensor L:", sensors.getDistanceL());
             telemetry.addData("SensorB:", sensors.getDistanceB());
-            telemetry.update();
+
             switch (slow) {
 
                 case 0:
-                    drive.go(x, y, r); // drive speed max
+                    drive.go(-x, -y, -r); // drive speed max
 
                     telemetry.addData("Driving slow?", "No");
-                    telemetry.update();
                     break;
                 case 1:
-                    drive.go(x * 0.25, y * 0.25, r * 0.25);
+                    drive.go(-x * 0.25, -y * 0.25, -r * 0.25);
 
                     telemetry.addData("Driving slow?", "Yes");
-                    telemetry.update();
                     break;
                 case 2: //for looping
                     slow = 0;
                     break;
             }
-
+            if (gamepad1.left_trigger > 0.6 && sensors.getDistanceL() < 21 && sensors.getDistanceB() > 76){
+                stopMotors();
+                sleep(600);
+                telemetry.addData("In", "zone");
+            }
+            telemetry.update();
         }
         ShooterMotor.setPower(0);
+        stopMotors();
     }
 }
 

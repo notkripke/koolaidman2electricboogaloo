@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.GorillabotsCentral;
 
-
+@Disabled
 @Autonomous(group = "test", name = "UGpark")
 
 public class UGpark extends GorillabotsCentral {
@@ -14,8 +15,7 @@ public class UGpark extends GorillabotsCentral {
 
         waitForStart();
 
-        MoveUntilEncoderGYRO(40, 0, .6, 0);//distance (rotations[12.57"]),
-                                           // direction (degrees), power, gyroT(?)
+        MoveUntilTime(1250,180,0.7);//180 DEGREES IS FORWARDS, 0 IS BACK
         if(!opModeIsActive())
         {
             return;

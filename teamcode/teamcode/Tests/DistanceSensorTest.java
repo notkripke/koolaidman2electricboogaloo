@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.GorillabotsCentral;
-
+@Disabled
 @TeleOp(group = "test", name = "DistanceSensorTest")
 public class DistanceSensorTest extends GorillabotsCentral {
     public void runOpMode() {
@@ -12,7 +13,7 @@ public class DistanceSensorTest extends GorillabotsCentral {
         waitForStart();
         while (opModeIsActive()) {
             telemetry.addData("l", sensors.getDistanceL());
-            telemetry.addData("b", sensors.getDistanceB());
+            //telemetry.addData("b", sensors.getDistanceB());
             telemetry.update();
         }
     }

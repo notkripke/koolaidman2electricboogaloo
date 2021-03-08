@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.GorillabotsCentral;
-
+@Disabled
 @TeleOp(group = "test", name = "GyroTest")
 public class GyroTest extends GorillabotsCentral {
     public void runOpMode() {

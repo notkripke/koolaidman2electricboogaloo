@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-
+import org.firstinspires.ftc.teamcode.Components.VisionPipeline;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -15,6 +15,16 @@ import org.firstinspires.ftc.teamcode.Components.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Components.RevGyro;
 import org.firstinspires.ftc.teamcode.Components.Sensors;
 import org.firstinspires.ftc.teamcode.Components.VuforiaKeyManager;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 import static java.lang.Math.abs;
 
@@ -25,6 +35,8 @@ public abstract class GorillabotsCentral extends LinearOpMode {
     public MecanumDrive drive;
     public RevGyro gyro;
     public ElapsedTime timer;
+    public VisionPipeline pipeline;
+    public OpenCvCamera webcam;
 
 
     /*
@@ -69,11 +81,17 @@ public abstract class GorillabotsCentral extends LinearOpMode {
     public void initializeComponents() {
         timer = new ElapsedTime();
 
+        ADrive = new AutoDrive(hardwareMap, telemetry);
         drive = new MecanumDrive(hardwareMap, telemetry);
 
         sensors = new Sensors(hardwareMap, telemetry);
 
         gyro = new RevGyro(hardwareMap, telemetry);
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
+        pipeline = new VisionPipeline();
+        webcam.setPipeline(pipeline);
 
         telemetry.addData("done:", "init");
         telemetry.update();
@@ -89,6 +107,11 @@ public abstract class GorillabotsCentral extends LinearOpMode {
 
         gyro = new RevGyro(hardwareMap, telemetry);
 
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
+        pipeline = new VisionPipeline();
+        webcam.setPipeline(pipeline);
+
         telemetry.addData("done:", "init");
         telemetry.update();
     }
@@ -100,6 +123,21 @@ public abstract class GorillabotsCentral extends LinearOpMode {
     public static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     public static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
+
+    public void startVisionProcessing() {
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                webcam.startStreaming(320,240, OpenCvCameraRotation.UPRIGHT);
+            }
+        });
+    }
+
+    public void stopVisionProcessing(){
+        webcam.stopStreaming();
+    }
 
     public void StartIntake(){ // teleop only
         DcMotor IntakeMotor;
@@ -157,7 +195,6 @@ public abstract class GorillabotsCentral extends LinearOpMode {
         Feeder.setPosition(1);
         sleep(300);
         Feeder.setPosition(0);
-
     }
 
     public void PowerShots(boolean left, boolean right){ // change distance things to 30-31
@@ -290,15 +327,17 @@ public abstract class GorillabotsCentral extends LinearOpMode {
         stopMotors();
     }
 */
-    public void MoveUntilRangeB(double distance, double direction, double power) {
-        setDriveEncoderOn(false);
-        setMotorsBackwards();
-        MoveTo(direction, power);
-        while ((sensors.getDistanceB() > distance) && opModeIsActive()) {
-            MoveTo(direction, power);
-        }
-        stopMotors();
-    }
+   // public void MoveUntilRangeB(double distance, double direction, double power) {
+     //   setDriveEncoderOn(false);
+       // setMotorsBackwards();
+        //MoveTo(direction, power);
+        //while ((sensors.getDistanceB() > distance) && opModeIsActive()) {
+          //  MoveTo(direction, power);
+        //}
+        //stopMotors();
+    //}
+
+
 
     /*public void MoveUntilRangeFwithG(double distance, double direction, double power,double gyroT) {
         setDriveEncoderOn(false);

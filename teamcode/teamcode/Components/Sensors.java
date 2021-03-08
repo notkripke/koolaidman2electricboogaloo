@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class Sensors
 {
 
-    public Rev2mDistanceSensor rangeB;
+   // public Rev2mDistanceSensor rangeB;
     public Rev2mDistanceSensor rangeL;
    // public Rev2mDistanceSensor rangeF;
    // public Rev2mDistanceSensor rangeR;
@@ -17,14 +17,14 @@ public class Sensors
     public Sensors(HardwareMap hardwareMap, Telemetry telemetry)
     {
 
-        rangeB = hardwareMap.get(Rev2mDistanceSensor.class, "rangeB");
+       // rangeB = hardwareMap.get(Rev2mDistanceSensor.class, "rangeB");
         rangeL = hardwareMap.get(Rev2mDistanceSensor.class, "rangeL");
        // rangeF = hardwareMap.get(Rev2mDistanceSensor.class, "rangeF");
     }
 
-    public double getDistanceB(){
-        return rangeB.getDistance(DistanceUnit.INCH);
-    }
+   // public double getDistanceB(){
+     //   return rangeB.getDistance(DistanceUnit.INCH);
+    //}
 
     public double getDistanceL(){
         return rangeL.getDistance(DistanceUnit.INCH);

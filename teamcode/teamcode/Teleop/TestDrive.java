@@ -12,8 +12,6 @@ public class TestDrive extends GorillabotsCentral {
 
     @Override
     public void runOpMode() {
-                //THIS CODE IS FOR TESTING NEW TELEOP ACTIONS
-                //COMMENT OUT OLD OPERATIONS... DO NOT DELETE UNLESS UNNECESSARY!!!
 
         initializeComponents();
 
@@ -24,14 +22,18 @@ public class TestDrive extends GorillabotsCentral {
         waitForStart();
 
         ElapsedTime SlowTimer = new ElapsedTime(); //creates timer to prevent rapid stage increase
-        ElapsedTime IntakeTimer = new ElapsedTime();
+        ElapsedTime IntakeTime = new ElapsedTime();
 
         int slow = 0;
-        boolean IntakeToggle = false;
+        int IntakeToggle = 0;
 
         DcMotor ShooterMotor;
         ShooterMotor = hardwareMap.dcMotor.get("ShooterMotor");
         ShooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        DcMotor Transfer;
+        Transfer = hardwareMap.dcMotor.get("Transfer");
+        Transfer.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         DcMotor Intake;
         Intake = hardwareMap.dcMotor.get("Intake");
@@ -45,28 +47,38 @@ public class TestDrive extends GorillabotsCentral {
             y = -gamepad1.left_stick_y;
             r = gamepad1.right_stick_x;
 
-
-
             if (gamepad1.x) { // X STARTS SHOOTER
                 ShooterMotor.setPower(1);
                 telemetry.addData("Shooter", "on");
             }
-            if (gamepad1.y){
+            if (gamepad1.y || gamepad2.y){
                 ShooterMotor.setPower(0);
                 telemetry.addData("Shooter","off");
             }
+            if(gamepad1.dpad_up) {
+                ShooterMotor.setPower(0.75);
+            }
+            if(gamepad1.dpad_down){
+                Intake.setPower(0.8);
+            }
 
-            if (gamepad1.left_bumper && IntakeTimer.time() > 1.5){
-                IntakeToggle = !IntakeToggle;
+            if(gamepad1.right_trigger > 0.4 || gamepad1.left_trigger > 0.4){
+                if(gamepad1.right_trigger > 0.4){
+                Transfer.setPower(0.6);
+                }
+                if(gamepad1.left_trigger > 0.4){
+                    Transfer.setPower(-0.6);
+                }
             }
-            if (IntakeToggle = true){
-                Intake.setPower(0.9);
-                telemetry.addData("Intake","on");
+            if(!(gamepad1.right_trigger > 0.4 || gamepad1.left_trigger > 0.4)){
+                Transfer.setPower(0);
             }
-            if(IntakeToggle = false){
-                Intake.setPower(0);
-                telemetry.addData("Intake","off");
-            }
+
+        if(gamepad1.left_bumper && IntakeTime.time() > 1){
+            IntakeToggle +=1;
+            IntakeTime.reset();
+        }
+
 
             if (gamepad1.b && SlowTimer.time() > 1.5) {
                 slow += 1;
@@ -82,8 +94,19 @@ public class TestDrive extends GorillabotsCentral {
 
                  */
 
-            telemetry.addData("Sensor L:", sensors.getDistanceL());
-            telemetry.addData("SensorB:", sensors.getDistanceB());
+            switch(IntakeToggle){
+                case 0:
+                    Intake.setPower(0);
+                    telemetry.addData("Intake","Off");
+                    break;
+                case 1:
+                    Intake.setPower(-0.8);
+                    telemetry.addData("Intake","On");
+                    break;
+                case 2:
+                    IntakeToggle = 0;
+                    break;
+            }
 
             switch (slow) {
 
@@ -100,11 +123,6 @@ public class TestDrive extends GorillabotsCentral {
                 case 2: //for looping
                     slow = 0;
                     break;
-            }
-            if (gamepad1.left_trigger > 0.6 && sensors.getDistanceL() < 21 && sensors.getDistanceB() > 76){
-                stopMotors();
-                sleep(600);
-                telemetry.addData("In", "zone");
             }
             telemetry.update();
         }
